@@ -61,10 +61,10 @@ const SongsModel = {
         .get(`/recommendations`, {
           params: {
             target_tempo: tempo,
-            // seed_tracks: track,
-            seed_genres: "hip-hop",
+            // or seed_genres or seed_artists
+            seed_tracks: track,
             limit: 20,
-            target_popularity: 100,
+            target_popularity: 50,
           },
         })
         .then((resp) => {
