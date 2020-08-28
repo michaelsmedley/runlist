@@ -146,7 +146,7 @@ export default {
     // If the user is not logged in, get user to authorize, else show modal to add playlist info
     const addPlaylistInfo = () => {
       if (!state.userToken) {
-        window.location.href = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Flocalhost:8080&scope=user-read-private%2cplaylist-modify-public`;
+        window.location.href = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Frunlist.michael-smedley.co.uk&scope=user-read-private%2cplaylist-modify-public`;
         return;
       }
 
