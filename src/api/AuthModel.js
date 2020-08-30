@@ -1,12 +1,11 @@
-import axios from "axios";
+import { authApi, api } from "./index";
 
 const AuthModel = {
   getAppToken: function() {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams();
       params.append("grant_type", "client_credentials");
-      console.log("params", params);
-      axios
+      authApi()
         .post("https://accounts.spotify.com/api/token", params, {
           auth: {
             username: process.env.VUE_APP_SPOTIFY_ID,
@@ -27,20 +26,15 @@ const AuthModel = {
   },
 
   getCurrentUser: function(token) {
-    axios.defaults.baseURL = "https://api.spotify.com/v1";
-    axios.defaults.headers.common = {
-      Authorization: `Bearer ${token}`,
-    };
     return new Promise((resolve, reject) => {
-      axios.get("/me", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(resp => {
-        resolve(resp.data)
-      }).catch(err => {
-        reject(err)
-      });
+      api(token)
+        .get("/me")
+        .then((resp) => {
+          resolve(resp.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   },
 };
