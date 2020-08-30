@@ -5,6 +5,31 @@
   <div id="modal"></div>
 </template>
 
+<script>
+import { reactive } from "vue";
+
+export default {
+  setup() {},
+  provide: reactive({
+    state: {
+      suggestions: [],
+      track: "",
+      authToken: "",
+      selectedTrack: {},
+      tempo: "",
+      recommendations: [],
+      userToken: null,
+      uris: [],
+      playlistInfo: {
+        name: "My Runlist",
+        public: true,
+        description: "A running playlist built by an API",
+      },
+    },
+  }),
+};
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -25,5 +50,9 @@
       color: #42b983;
     }
   }
+}
+
+.inline-btn {
+  max-width: 100%;
 }
 </style>
