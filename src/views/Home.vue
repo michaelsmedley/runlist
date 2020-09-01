@@ -88,7 +88,7 @@ export default {
         return;
       }
 
-      this.modalOpen.value = true;
+      this.modalOpen = true;
     },
     handleGetBpm(track) {
       this.state.selectedTrack = track;
