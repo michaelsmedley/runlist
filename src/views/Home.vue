@@ -22,9 +22,9 @@
           {{ recommendation.artists[0].name }} - {{ recommendation.name }}
         </li>
       </ul>
-      <button @click="addPlaylistInfo" type="button">Save to playlist?</button>
-      <p>{{ status }}</p>
-      <p>{{ modalOpen }}</p>
+      <button @click="handleGeneratePlaylist" type="button">
+        Save to playlist?
+      </button>
     </div>
   </div>
   <teleport to="#modal">
@@ -80,6 +80,16 @@ export default {
   },
 
   methods: {
+    handleGeneratePlaylist() {
+      if (!this.state.userToken) {
+        window.location.href = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Frunlist.michael-smedley.co.uk&scope=user-read-private%2cplaylist-modify-public`;
+        //Put state in localStorage so that when we come back it is available
+        localStorage.setItem("runlist_state", JSON.stringify(this.state));
+        return;
+      }
+
+      this.modalOpen.value = true;
+    },
     handleGetBpm(track) {
       this.state.selectedTrack = track;
       this.state.suggestions = [];
@@ -96,9 +106,46 @@ export default {
         });
       });
     },
+    saveToPlaylist() {
+      const ids = this.state.recommendations.map((track) => track.uri);
+      this.state.uris = ids;
+
+      // get details about the user, create playlist, add songs
+      AuthModel.getCurrentUser(this.state.userToken).then((resp) => {
+        const userId = resp.id;
+
+        //create a playlist
+        //TODO: Should be a playlist model
+        SongsModel.createPlaylist(
+          userId,
+          this.state.playlistInfo,
+          this.state.userToken
+        ).then((resp) => {
+          // then add songs to it
+          SongsModel.addSongsToPlaylist(
+            resp.id,
+            userId,
+            this.state.uris,
+            this.state.userToken
+          )
+            .then(() => {
+              this.status = "Playlist saved!!";
+            })
+            .catch((err) => {
+              this.status = err;
+            });
+        });
+      });
+    },
   },
 
   mounted() {
+    // if we have state in localstorage, implement it and then clear
+    if (localStorage.getItem("runlist_state")) {
+      this.state = JSON.parse(localStorage.getItem("runlist_state"));
+      localStorage.removeItem("runlist_state");
+    }
+
     // get app access token
     if (this.state.authToken == "") {
       AuthModel.getAppToken().then((token) => {
@@ -106,7 +153,7 @@ export default {
       });
     }
 
-    // get user access token from hash string
+    // get user access token from hash string if it exists
     if (window.location.hash) {
       const params = new URLSearchParams(window.location.hash.slice(1));
       if (params.get("access_token")) {
