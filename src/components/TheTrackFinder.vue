@@ -7,14 +7,12 @@
       v-model="track"
     />
 
-    <p>{{ track }}</p>
-
     <button type="submit">Search</button>
     <div class="suggestions" v-if="state.suggestions.length > 0">
       <h2>Suggestions</h2>
       <inline-list>
         <li v-for="suggestion in state.suggestions" :key="suggestion.id">
-          <button @click="handleGetBpm(suggestion)" class="inline-btn">
+          <button @click="handleTrackClick(suggestion)" class="inline-btn">
             {{ suggestion.artists[0].name }} - {{ suggestion.name }}
           </button>
         </li>
@@ -40,8 +38,8 @@ export default {
   data() {
     return {
       timeout: null,
-      debounceTimer: 1000
-    }
+      debounceTimer: 1000,
+    };
   },
 
   computed: {
@@ -50,7 +48,7 @@ export default {
         return this.state.track;
       },
       set(newValue) {
-        this.state.track = newValue
+        this.state.track = newValue;
         if (this.timeout !== null) {
           clearTimeout(this.timeout);
         }
@@ -63,6 +61,9 @@ export default {
   },
 
   methods: {
+    handleTrackClick(track) {
+      this.$emit("selected", track);
+    },
     search(val) {
       // this.state.track = val
       SongsModel.searchTrack(val, this.state.authToken).then((resp) => {

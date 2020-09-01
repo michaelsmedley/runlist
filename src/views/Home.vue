@@ -4,7 +4,7 @@
     <p v-if="state.authToken">Connected with token {{ state.authToken }}</p>
     <p v-if="state.userToken">User authorised with {{ state.userToken }}</p>
 
-    <track-finder />
+    <track-finder @selected="handleGetBpm" />
 
     <div v-if="state.selectedTrack && state.tempo">
       <p>
@@ -53,8 +53,9 @@
 
 <script>
 import AuthModel from "@/api/AuthModel";
+import SongsModel from "@/api/SongsModel";
 
-import TrackFinder from '@/components/TheTrackFinder'
+import TrackFinder from "@/components/TheTrackFinder";
 
 export default {
   name: "Home",
@@ -74,8 +75,27 @@ export default {
 
   computed: {
     track() {
-      return this.state.track
-    }
+      return this.state.track;
+    },
+  },
+
+  methods: {
+    handleGetBpm(track) {
+      this.state.selectedTrack = track;
+      this.state.suggestions = [];
+      SongsModel.getTrackInfo(track.id, this.state.authToken).then((resp) => {
+        this.state.tempo = resp;
+
+        // get recomendations
+        SongsModel.getRecommendations(
+          resp,
+          track.id,
+          this.state.authToken
+        ).then((resp) => {
+          this.state.recommendations = resp;
+        });
+      });
+    },
   },
 
   mounted() {
@@ -178,6 +198,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
