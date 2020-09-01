@@ -1,4 +1,4 @@
-import { authApi, api } from "./index";
+import { api, authApi } from "./index";
 
 const AuthModel = {
   getAppToken: function() {

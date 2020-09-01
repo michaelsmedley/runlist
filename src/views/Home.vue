@@ -3,6 +3,7 @@
     <h1>Search for a track to begin</h1>
     <p v-if="state.authToken">Connected with token {{ state.authToken }}</p>
     <p v-if="state.userToken">User authorised with {{ state.userToken }}</p>
+    <p v-if="state.user.id">Hello {{ state.user.id }}</p>
 
     <track-finder @selected="handleGetBpm" />
 
@@ -111,30 +112,27 @@ export default {
       this.state.uris = ids;
 
       // get details about the user, create playlist, add songs
-      AuthModel.getCurrentUser(this.state.userToken).then((resp) => {
-        const userId = resp.id;
 
-        //create a playlist
-        //TODO: Should be a playlist model
-        SongsModel.createPlaylist(
-          userId,
-          this.state.playlistInfo,
+      //create a playlist
+      //TODO: Should be a playlist model
+      SongsModel.createPlaylist(
+        this.state.user.id,
+        this.state.playlistInfo,
+        this.state.userToken
+      ).then((resp) => {
+        // then add songs to it
+        SongsModel.addSongsToPlaylist(
+          resp.id,
+          this.state.user.id,
+          this.state.uris,
           this.state.userToken
-        ).then((resp) => {
-          // then add songs to it
-          SongsModel.addSongsToPlaylist(
-            resp.id,
-            userId,
-            this.state.uris,
-            this.state.userToken
-          )
-            .then(() => {
-              this.status = "Playlist saved!!";
-            })
-            .catch((err) => {
-              this.status = err;
-            });
-        });
+        )
+          .then(() => {
+            this.status = "Playlist saved!!";
+          })
+          .catch((err) => {
+            this.status = err;
+          });
       });
     },
   },
@@ -158,6 +156,9 @@ export default {
       const params = new URLSearchParams(window.location.hash.slice(1));
       if (params.get("access_token")) {
         this.state.userToken = params.get("access_token");
+        AuthModel.getCurrentUser(this.state.userToken).then((resp) => {
+          this.state.user = resp;
+        });
       }
     }
   },
