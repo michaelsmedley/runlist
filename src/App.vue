@@ -19,6 +19,7 @@ export default {
       tempo: "",
       recommendations: [],
       userToken: null,
+      user: {},
       uris: [],
       playlistInfo: {
         name: "My Runlist",
