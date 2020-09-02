@@ -1,28 +1,34 @@
 $rfs-base-value: $base-font-size;
 
 body {
-  @include font-size($base-font-size);
+  //   @include font-size($base-font-size);
+  font-size: $base-font-size;
 }
 // https://utopia.fyi/calculator?c=375,21,1.2,1920,24,1.25,5,2,768-1366
 h1,
 .as-h1 {
-  @include font-size(4.0675rem);
+  //   @include font-size(4.0675rem);
+  font-size: 4.0675rem;
 }
 h2,
 .as-h2 {
-  @include font-size(3.30125rem);
+  //   @include font-size(3.30125rem);
+  font-size: 3.30125rem;
 }
 h3,
 .as-h3 {
-  @include font-size(2.679375rem);
+  //   @include font-size(2.679375rem);
+  font-size: 2.679375rem;
 }
 h4,
 .as-h4 {
-  @include font-size(2.175rem);
+  //   @include font-size(2.175rem);
+  font-size: 2.175rem;
 }
 h5,
 .as-h5 {
-  @include font-size(1.765rem);
+  //   @include font-size(1.765rem);
+  font-size: 1.765rem;
 }
 
 @for $i from 1 through 6 {
