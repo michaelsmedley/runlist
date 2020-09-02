@@ -1,15 +1,23 @@
 <template>
+  <site-header />
   <div id="app">
     <router-view />
   </div>
-  <div id="modal"></div>
+  <site-footer />
+  <div id="modal" class="c-modal"></div>
 </template>
 
 <script>
 import { reactive } from "vue";
 
+import SiteHeader from "@/components/TheSiteHeader";
+import SiteFooter from "@/components/TheSiteFooter";
+
 export default {
-  setup() {},
+  components: {
+    SiteHeader,
+    SiteFooter,
+  },
   provide: reactive({
     state: {
       suggestions: [],
@@ -21,6 +29,7 @@ export default {
       userToken: null,
       user: {},
       uris: [],
+      loginLink: `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Frunlist.michael-smedley.co.uk&scope=user-read-private%2cplaylist-modify-public`,
       playlistInfo: {
         name: "My Runlist",
         public: true,
@@ -32,28 +41,10 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+@import "@/assets/style/style.scss";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-
-.inline-btn {
-  max-width: 100%;
+body {
+  color: $brand__black;
+  font-family: $font__body;
 }
 </style>
