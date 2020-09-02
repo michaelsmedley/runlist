@@ -1,11 +1,26 @@
 <template>
   <div class="home">
-    <h1>Search for a track to begin</h1>
-    <p v-if="state.authToken">Connected with token {{ state.authToken }}</p>
-    <p v-if="state.userToken">User authorised with {{ state.userToken }}</p>
-    <p v-if="state.user.id">Hello {{ state.user.id }}</p>
+    <intro-block is-large overlap>
+      <div class="container">
+        <div class="sm-12 text-center">
+          <h2>Runlist brings the playlist, you bring the awesome</h2>
 
-    <track-finder @selected="handleGetBpm" />
+          <p>
+            Runlist will generate a Spotify playlist for you based on the BPM of
+            your favourite running track, so that you can make sure your pace
+            never drops.
+          </p>
+          <p>Filter tracks by artists or genre to get your perfect mix</p>
+        </div>
+      </div>
+    </intro-block>
+
+    <div class="container">
+      <div class="sm-12 text-center">
+
+        <track-finder @selected="handleGetBpm" />
+      </div>
+    </div>
 
     <div v-if="state.selectedTrack && state.tempo">
       <p>
@@ -15,14 +30,23 @@
     </div>
     <div v-if="state.recommendations.length > 0">
       <h3>Here are some recommendations</h3>
-      <ul class="inline-list">
+      <inline-list>
         <li
           v-for="recommendation in state.recommendations"
           :key="recommendation.id"
         >
+          <img
+            loading="lazy"
+            :src="recommendation.album.images[2].url"
+            :alt="
+              `Image cover for ${recommendation.name} by ${recommendation.artists[0].name}`
+            "
+            width="64"
+            height="64"
+          />
           {{ recommendation.artists[0].name }} - {{ recommendation.name }}
         </li>
-      </ul>
+      </inline-list>
       <button @click="handleGeneratePlaylist" type="button">
         Save to playlist?
       </button>
@@ -56,12 +80,16 @@
 import AuthModel from "@/api/AuthModel";
 import SongsModel from "@/api/SongsModel";
 
+import InlineList from "@/components/BaseListInline";
+import IntroBlock from "@/components/BaseIntroBlock";
 import TrackFinder from "@/components/TheTrackFinder";
 
 export default {
   name: "Home",
 
   components: {
+    InlineList,
+    IntroBlock,
     TrackFinder,
   },
 
@@ -83,7 +111,7 @@ export default {
   methods: {
     handleGeneratePlaylist() {
       if (!this.state.userToken) {
-        window.location.href = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Frunlist.michael-smedley.co.uk&scope=user-read-private%2cplaylist-modify-public`;
+        window.location.href = this.state.loginLink;
         //Put state in localStorage so that when we come back it is available
         localStorage.setItem("runlist_state", JSON.stringify(this.state));
         return;

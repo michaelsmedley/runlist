@@ -1,0 +1,45 @@
+$column-count: 12;
+$row-count: 1;
+
+.container {
+  display: grid;
+  grid-template-columns: repeat($column-count, minmax(0, 1fr));
+  grid-template-rows: repeat($row-count, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 75rem;
+  width: 90vw;
+
+  /**
+   * Columns
+   * Do seperately because cascade
+   **/
+  @for $i from 1 to $column-count + 1 {
+    .sm-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+
+  @for $i from 1 to $column-count + 1 {
+    @include media(">md") {
+      .md-#{$i} {
+        grid-column: span #{$i};
+      }
+    }
+  }
+
+  @for $i from 1 to $column-count + 1 {
+    @include media(">lg") {
+      .lg-#{$i} {
+        grid-column: span #{$i};
+      }
+    }
+  }
+
+  @for $i from 1 to $column-count + 1 {
+    @include media(">xl") {
+      .xl-#{$i} {
+        grid-column: span #{$i};
+      }
+    }
+  }
+}
