@@ -47,4 +47,36 @@ body {
   color: $brand__black;
   font-family: $font__body;
 }
+
+.c-modal {
+  left: 50%;
+  max-width: 768px;
+  position: fixed;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 90vw;
+  z-index: 1;
+
+  > * {
+    background: $brand__white;
+    border-radius: 20px;
+    padding: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  &:not(:empty) {
+    &:after {
+      background: rgba(0, 0, 0, 0.5);
+      content: "";
+      height: 200vh;
+      left: 0;
+      position: fixed;
+      top: 0;
+      transform: translate3d(-50%, -50%, 0);
+      width: 200vw;
+      z-index: -1;
+    }
+  }
+}
 </style>
