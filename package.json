@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@trevoreyre/autocomplete-js": "^2.2.0",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "include-media": "^1.4.9",

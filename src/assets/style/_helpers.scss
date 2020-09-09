@@ -7,55 +7,56 @@
 }
 
 // padding + margin
-$gaps: (0.5rem, 1rem, 1.5rem, 2rem);
+$gaps: (0, 0.5rem, 1rem, 1.5rem, 2rem);
 
-@for $i from 1 through length($gaps) {
+@for $i from 0 through length($gaps)-1 {
+  $select: $i + 1;
   .p-#{$i} {
-    padding: nth($gaps, $i);
+    padding: nth($gaps, $select);
   }
   .px-#{$i} {
-    padding-left: nth($gaps, $i);
-    padding-right: nth($gaps, $i);
+    padding-left: nth($gaps, $select);
+    padding-right: nth($gaps, $select);
   }
   .py-#{$i} {
-    padding-top: nth($gaps, $i);
-    padding-bottom: nth($gaps, $i);
+    padding-top: nth($gaps, $select);
+    padding-bottom: nth($gaps, $select);
   }
   .pt-#{$i} {
-    padding-top: nth($gaps, $i);
+    padding-top: nth($gaps, $select);
   }
   .pr-#{$i} {
-    padding-right: nth($gaps, $i);
+    padding-right: nth($gaps, $select);
   }
   .pb-#{$i} {
-    padding-bottom: nth($gaps, $i);
+    padding-bottom: nth($gaps, $select);
   }
   .pl-#{$i} {
-    padding-left: nth($gaps, $i);
+    padding-left: nth($gaps, $select);
   }
 
   .m-#{$i} {
-    margin: nth($gaps, $i);
+    margin: nth($gaps, $select);
   }
   .mx-#{$i} {
-    margin-left: nth($gaps, $i);
-    margin-right: nth($gaps, $i);
+    margin-left: nth($gaps, $select);
+    margin-right: nth($gaps, $select);
   }
   .my-#{$i} {
-    margin-top: nth($gaps, $i);
-    margin-bottom: nth($gaps, $i);
+    margin-top: nth($gaps, $select);
+    margin-bottom: nth($gaps, $select);
   }
   .mt-#{$i} {
-    margin-top: nth($gaps, $i);
+    margin-top: nth($gaps, $select);
   }
   .mr-#{$i} {
-    margin-right: nth($gaps, $i);
+    margin-right: nth($gaps, $select);
   }
   .mb-#{$i} {
-    margin-bottom: nth($gaps, $i);
+    margin-bottom: nth($gaps, $select);
   }
   .ml-#{$i} {
-    margin-left: nth($gaps, $i);
+    margin-left: nth($gaps, $select);
   }
 }
 
@@ -72,6 +73,10 @@ $gaps: (0.5rem, 1rem, 1.5rem, 2rem);
 
 .self-center {
   align-self: center;
+}
+
+.justify-self-center {
+  justify-self: center;
 }
 
 [class*="items-"] {
@@ -92,6 +97,9 @@ $gaps: (0.5rem, 1rem, 1.5rem, 2rem);
 
 .text-center {
   text-align: center;
+}
+.text-right {
+  text-align: right;
 }
 
 /**

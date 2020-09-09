@@ -13,15 +13,10 @@ export default {
 <style lang="scss" scoped>
 .c-inline-list {
   list-style-type: none;
-  margin: 2vmax auto;
-  max-width: 500px;
+  margin: 2vmax 0;
+  max-width: 90vw;
+  padding: 0;
   text-align: left;
-  width: 90vw;
-
-  li {
-    border-bottom: 1px solid lightblue;
-    display: block;
-    padding: 2vmax 0;
-  }
+  width: 100%;
 }
 </style>

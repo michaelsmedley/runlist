@@ -1,43 +1,43 @@
 <template>
   <form class="c-track-form container" @submit.prevent="search">
-    <div class="sm-12 md-11">
+    <div
+      aria-expanded="false"
+      aria-haspopup="grid"
+      aria-owns="suggestions"
+      class="sm-12"
+      ref="textHolder"
+      role="combobox"
+    >
       <input
+        id="trackInput"
+        autocomplete="off"
+        aria-autocomplete="list"
+        aria-controls="suggestions"
+        aria-activedescendant=""
         type="text"
         name="track"
         placeholder="Enter track name, artist etc."
         v-model="track"
       />
     </div>
-    <div class="hidden md-block md-1">
-      <button type="submit">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 489.713 489.713"
-          height="30"
-          width="30"
-        >
-          <path
-            d="M483.4 454.444l-121.3-121.4c28.7-35.2 46-80 46-128.9 0-112.5-91.5-204.1-204.1-204.1S0 91.644 0 204.144s91.5 204 204.1 204c48.8 0 93.7-17.3 128.9-46l121.3 121.3c8.3 8.3 20.9 8.3 29.2 0s8.3-20.7-.1-29zm-442.7-250.3c0-90.1 73.2-163.3 163.3-163.3s163.4 73.3 163.4 163.4-73.3 163.4-163.4 163.4-163.3-73.4-163.3-163.5z"
-          />
-        </svg>
-      </button>
-    </div>
-    <div class="suggestions" v-if="state.suggestions.length > 0">
-      <h2>Suggestions</h2>
-      <inline-list>
-        <li v-for="suggestion in state.suggestions" :key="suggestion.id">
-          <button @click="handleTrackClick(suggestion)" class="inline-btn">
-            {{ suggestion.artists[0].name }} - {{ suggestion.name }}
-          </button>
-        </li>
-      </inline-list>
-    </div>
   </form>
+  <div class="suggestions" id="suggestions" role="grid">
+    <inline-list v-if="state.suggestions.length > 0">
+      <li
+        v-for="(suggestion, key) in state.suggestions"
+        :key="suggestion.id"
+        :class="{ focused: key === focusedEl }"
+      >
+        <track-card :track="suggestion" hide-preview @click="handleTrackClick(suggestion)" />
+      </li>
+    </inline-list>
+  </div>
 </template>
 
 <script>
 import SongsModel from "@/api/SongsModel";
 
+import TrackCard from "./BaseCardTrack"
 import InlineList from "./BaseListInline";
 
 export default {
@@ -47,22 +47,32 @@ export default {
 
   components: {
     InlineList,
+    TrackCard
   },
 
   data() {
     return {
       timeout: null,
       debounceTimer: 1000,
+      focusedEl: 0,
     };
   },
 
   computed: {
+    suggestions() {
+      return this.state.suggestions;
+    },
     track: {
       get() {
         return this.state.track;
       },
       set(newValue) {
         this.state.track = newValue;
+        if (newValue == "") {
+          this.$refs["textHolder"].setAttribute("aria-expanded", false);
+          this.state.suggestions = [];
+          return;
+        }
         if (this.timeout !== null) {
           clearTimeout(this.timeout);
         }
@@ -82,7 +92,28 @@ export default {
       // this.state.track = val
       SongsModel.searchTrack(val, this.state.authToken).then((resp) => {
         this.state.suggestions = resp;
+        this.$refs["textHolder"].setAttribute("aria-expanded", resp.length > 0);
       });
+    },
+    nextItem() {
+      if (event.keyCode == 38 && this.focusedEl > 0) {
+        this.focusedEl--;
+      } else if (
+        event.keyCode == 40 &&
+        this.focusedEl < this.suggestions.length
+      ) {
+        this.focusedEl++;
+      }
+    },
+  },
+
+  watch: {
+    suggestions(newValue) {
+      if (newValue.length > 0) {
+        document.addEventListener("keyup", this.nextItem);
+      } else {
+        document.removeEventListener("keyup", this.nextItem);
+      }
     },
   },
 };
@@ -91,9 +122,10 @@ export default {
 <style lang="scss" scoped>
 .c-track-form {
   background: white;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   border: 1px solid $brand__tint;
+  border-radius: 10px;
   padding: 1rem;
   text-align: center;
   input,
@@ -106,5 +138,9 @@ export default {
     font-size: 1.5rem;
     width: 100%;
   }
+}
+
+.focused {
+  // background: red;
 }
 </style>

@@ -35,6 +35,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    secondary: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -63,6 +67,7 @@ a {
     @include font-size(1rem);
     border-radius: 20px;
     color: $brand__primary;
+    display: inline-block;
     font-weight: bold;
     padding: 0.5rem 1.5rem;
     text-decoration: none;
@@ -100,6 +105,13 @@ a {
           transform: translateX(-50%);
         }
       }
+    }
+    &.secondary {
+      background: $brand__tertiary;
+      color: $brand__white;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
     }
   }
 }
