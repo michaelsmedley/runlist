@@ -22,23 +22,17 @@ export default {
 
 <style lang="scss" scoped>
 .c-intro-block {
-  background-image: linear-gradient(
-    to right,
-    $brand__primary 0%,
-    $brand__secondary 100%
-  );
-  color: $brand__white;
-  margin-bottom: 1rem;
+  @apply bg-gradient-to-r from-green-500 to-green-300 text-white-500 mb-4;
 
   &.is-large {
-    padding: 4rem 0;
+    @apply py-16;
   }
 
   &.overlap {
-    margin-bottom: -2rem;
+    @apply -mb-8;
 
-    @include media(">=md") {
-      padding-bottom: 6rem;
+    @screen md {
+      // @apply -mb-3;
     }
   }
 }

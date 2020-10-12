@@ -1,23 +1,22 @@
 <template>
   <div class="home">
     <intro-block is-large overlap>
-      <div class="container">
-        <div class="sm-12 text-center">
-          <h2>Welcome to Runlist</h2>
-
-          <p>
-            Runlist will generate a Spotify playlist for you based on the BPM of
-            your favourite running track, so that you can make sure your pace
-            never drops.
-          </p>
-          <p>Filter tracks by artists or genre to get your perfect mix</p>
+      <div class="container px-1 md:px-0 mx-auto">
+        <div class="text-center">
+          <h2>Runlist brings the playlist,<br />you bring the awesome</h2>
         </div>
       </div>
     </intro-block>
 
-    <div class="container">
-      <div class="sm-12 text-center">
+    <div class="container mx-auto">
+      <div class="text-center">
         <track-finder @selected="handleGetBpm" />
+        <p>
+          Runlist will generate a Spotify playlist for you based on the BPM of
+          your favourite running track, so that you can make sure your pace
+          never drops.
+        </p>
+        <p>Filter tracks by artists or genre to get your perfect mix</p>
       </div>
     </div>
 
@@ -48,7 +47,9 @@
           >
             Save to playlist?
           </button>
-          <base-link :href="state.loginLink" pill secondary v-else>Please login to save your playlist</base-link>
+          <base-link :href="state.loginLink" pill secondary v-else
+            >Please login to save your playlist</base-link
+          >
         </p>
       </div>
     </div>
@@ -76,7 +77,10 @@
         </p>
 
         <p v-if="saved">
-          <span v-if="saved === true">The playlist has been saved! <base-link href="/">Click here to start again</base-link></span>
+          <span v-if="saved === true"
+            >The playlist has been saved!
+            <base-link href="/">Click here to start again</base-link></span
+          >
           <span v-else>The playlist has not been saved!</span>
         </p>
       </form>

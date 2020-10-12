@@ -60,59 +60,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-a {
-  text-decoration: underline;
 
-  &.pill {
-    @include font-size(1rem);
-    border-radius: 20px;
-    color: $brand__primary;
-    display: inline-block;
-    font-weight: bold;
-    padding: 0.5rem 1.5rem;
-    text-decoration: none;
-    transition: all ease-in-out 0.2s;
-
-    &:hover {
-      color: $brand__secondary;
-    }
-    &.primary {
-      color: $brand__white;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-
-      &:after {
-        content: "";
-        background-image: linear-gradient(
-          to right,
-          $brand__primary 0%,
-          $brand__tertiary 100%
-        );
-        display: block;
-        height: 100%;
-        left: 0;
-        pointer-events: none;
-        position: absolute;
-        top: 0;
-        transition: all ease-in-out 0.2s;
-        width: 400%;
-        z-index: -1;
-      }
-
-      &:hover {
-        &:after {
-          transform: translateX(-50%);
-        }
-      }
-    }
-    &.secondary {
-      background: $brand__tertiary;
-      color: $brand__white;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-  }
-}
 </style>
