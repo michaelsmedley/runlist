@@ -1,34 +1,78 @@
+@import "/reset.css";
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
 /**
- * CONTENTS
- *
- * SETTINGS
- * Global...............Globally-available variables and config.
- * Included globally
- *
- * TOOLS
- * Mixins...............Useful mixins.
- * Included globally
- *
- * GENERIC
- * Normalize.css........A level playing field.
- * Box-sizing...........Better default `box-sizing`.
- */
- @import "./reset";
- @import './layout';
-/**
- *
- * BASE
- * Headings.............H1–H6 styles.
- */
- @import "./typography";
- @import "./forms";
-/**
- *
- * OBJECTS
- * Wrappers.............Wrapping and constraining elements.
- *
- *
- * TRUMPS
- * Text.................Text helpers.
- */
- @import "./helpers";
+ * base styles
+ **/
+
+ body, html {
+     @apply text-black-500
+ }
+
+#app {
+  @apply font-body text-sm-p;
+
+  @screen md {
+    @apply text-md-p;
+  }
+
+  @screen lg {
+    @apply text-lg-p;
+  }
+}
+
+@for $i from 1 to 6 {
+  h#{$i} {
+    @apply font-bold leading-tight text-sm-h#{$i};
+    @screen md {
+      @apply text-md-h#{$i};
+    }
+
+    @screen lg {
+      @apply text-lg-h#{$i};
+    }
+  }
+}
+
+p {
+  @apply mb-4;
+}
+
+.container {
+  @apply mx-auto px-1;
+  max-width: 90vw;
+}
+
+a {
+    @apply text-green-500 underline;
+
+    &:hover {
+        @apply bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent underline;
+    }
+}
+
+.scroll-snap {
+    scroll-snap-type: x mandatory;
+    display: flex;
+    overflow-x: scroll;
+
+    .snap-child {
+        scroll-snap-align: start;
+        min-width: 90vw;
+        padding: 5vh 5vw;
+    }
+
+    @screen md {
+        scroll-snap-type: none;
+
+        .snap-child {
+            @apply px-4;
+            min-width: 1px;
+        }
+    }
+}

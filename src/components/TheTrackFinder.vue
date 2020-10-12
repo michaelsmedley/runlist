@@ -28,7 +28,11 @@
         :key="suggestion.id"
         :class="{ focused: key === focusedEl }"
       >
-        <track-card :track="suggestion" hide-preview @click="handleTrackClick(suggestion)" />
+        <track-card
+          :track="suggestion"
+          hide-preview
+          @click="handleTrackClick(suggestion)"
+        />
       </li>
     </inline-list>
   </div>
@@ -37,7 +41,7 @@
 <script>
 import SongsModel from "@/api/SongsModel";
 
-import TrackCard from "./BaseCardTrack"
+import TrackCard from "./BaseCardTrack";
 import InlineList from "./BaseListInline";
 
 export default {
@@ -47,7 +51,7 @@ export default {
 
   components: {
     InlineList,
-    TrackCard
+    TrackCard,
   },
 
   data() {
@@ -121,26 +125,20 @@ export default {
 
 <style lang="scss" scoped>
 .c-track-form {
-  background: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  border: 1px solid $brand__tint;
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
+  @apply bg-white-500 shadow-subtle border-black-200 rounded-sm p-4 text-center mb-5;
+
   input,
   button,
   textarea {
-    background: transparent;
-    border: none;
-    box-sizing: border-box;
-    display: inline-block;
-    font-size: 1.5rem;
-    width: 100%;
-  }
-}
+    @apply bg-transparent border-0 inline-block text-sm-p w-full;
 
-.focused {
-  // background: red;
+    @screen md {
+      @apply text-md-p
+    }
+
+    @screen lg {
+      @apply text-lg-p
+    }
+  }
 }
 </style>
