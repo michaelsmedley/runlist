@@ -5,6 +5,9 @@ module.exports = {
   },
   purge: [],
   theme: {
+    boxShadow: {
+      subtle: '0px 0px 20px rgba(0, 0, 0, 0.1)'
+    },
     borderRadius: {
       sm: "10px",
       full: '100px'

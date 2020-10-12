@@ -18,6 +18,36 @@
         </p>
         <p>Filter tracks by artists or genre to get your perfect mix</p>
       </div>
+
+      <div class="scroll-snap">
+        <div class="snap-child md:w-1/3 md:p-0">
+        <base-cta>
+          <h5>Pick your song</h5>
+          <p>
+            Search the Spotify library to find the song that helps you keep
+            pace.
+          </p>
+        </base-cta>
+        </div>
+
+        <div class="snap-child md:w-1/3 md:p-0">
+        <base-cta>
+          <h5>Get your list</h5>
+          <p>
+            Runlist will build a playlist for you based on the tempo and genre of your song.
+          </p>
+        </base-cta>
+        </div>
+
+        <div class="snap-child md:w-1/3 md:p-0">
+        <base-cta>
+          <h5>Make it yours</h5>
+          <p>
+            Save your playlist, and get back to smashing your PB
+          </p>
+        </base-cta>
+        </div>
+      </div>
     </div>
 
     <div v-if="state.selectedTrack && state.tempo" class="container">
@@ -97,6 +127,7 @@ import InlineList from "@/components/BaseListInline";
 import IntroBlock from "@/components/BaseIntroBlock";
 import TrackFinder from "@/components/TheTrackFinder";
 import TrackCard from "@/components/BaseCardTrack";
+import BaseCta from "@/components/BaseCta";
 
 export default {
   name: "Home",
@@ -107,6 +138,7 @@ export default {
     IntroBlock,
     TrackCard,
     TrackFinder,
+    BaseCta,
   },
 
   inject: ["state"],

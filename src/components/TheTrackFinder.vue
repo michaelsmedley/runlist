@@ -125,7 +125,7 @@ export default {
 
 <style lang="scss" scoped>
 .c-track-form {
-  @apply bg-white-500 shadow-lg border-black-200 rounded-sm p-4 text-center mb-4;
+  @apply bg-white-500 shadow-subtle border-black-200 rounded-sm p-4 text-center mb-5;
 
   input,
   button,
