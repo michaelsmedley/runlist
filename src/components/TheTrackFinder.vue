@@ -125,7 +125,7 @@ export default {
 
 <style lang="scss" scoped>
 .c-track-form {
-  @apply bg-white-500 shadow-subtle border-black-200 rounded-sm p-4 text-center mb-5;
+  @apply bg-white-500 shadow-subtle border-black-200 rounded-sm p-4 text-center mb-5 transition-all ease-linear duration-200;
 
   input,
   button,
@@ -139,6 +139,14 @@ export default {
     @screen lg {
       @apply text-lg-p
     }
+
+    &:focus {
+      @apply outline-none;
+    }
+  }
+
+  &:focus-within {
+    @apply shadow-focus;
   }
 }
 </style>

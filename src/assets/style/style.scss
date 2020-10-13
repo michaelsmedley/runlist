@@ -10,9 +10,10 @@
  * base styles
  **/
 
- body, html {
-     @apply text-black-500
- }
+body,
+html {
+  @apply text-black-500;
+}
 
 #app {
   @apply font-body text-sm-p;
@@ -46,33 +47,43 @@ p {
 .container {
   @apply mx-auto px-1;
   max-width: 90vw;
+
+  &--bleed {
+    @apply px-0;
+    max-width: 100vw;
+
+    @screen lg {
+      max-width: 90vw;
+    }
+  }
 }
 
 a {
-    @apply text-green-500 underline;
+  @apply text-green-500 underline;
 
-    &:hover {
-        @apply bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent underline;
-    }
+  &:hover {
+    @apply bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent underline;
+  }
 }
 
 .scroll-snap {
-    scroll-snap-type: x mandatory;
+  scroll-snap-type: x mandatory;
+  display: flex;
+  overflow-x: scroll;
+
+  .snap-child {
     display: flex;
-    overflow-x: scroll;
+    scroll-snap-align: start;
+    min-width: 90vw;
+    padding: 5vh 5vw;
+  }
+
+  @screen lg {
+    scroll-snap-type: none;
 
     .snap-child {
-        scroll-snap-align: start;
-        min-width: 90vw;
-        padding: 5vh 5vw;
+      @apply px-4;
+      min-width: 1px;
     }
-
-    @screen md {
-        scroll-snap-type: none;
-
-        .snap-child {
-            @apply px-4;
-            min-width: 1px;
-        }
-    }
+  }
 }

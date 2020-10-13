@@ -3,14 +3,15 @@ module.exports = {
     // removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
   },
-  purge: [],
+  purge: ["./src/**/*.html", "./src/**/*.vue", "./src/**/*.jsx"],
   theme: {
     boxShadow: {
-      subtle: '0px 0px 20px rgba(0, 0, 0, 0.1)'
+      subtle: "0px 0px 20px rgba(0, 0, 0, 0.1)",
+      focus: "0px 0px 20px #BCE5F8"
     },
     borderRadius: {
       sm: "10px",
-      full: '100px'
+      full: "100px",
     },
     fontFamily: {
       body: ["Jost", "sans-serif"],
@@ -90,8 +91,8 @@ module.exports = {
           600: "#0a0b0c",
           700: "#080809",
           800: "#050606",
-          900: "#030303"
-},
+          900: "#030303",
+        },
       },
     },
   },
