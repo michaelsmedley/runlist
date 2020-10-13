@@ -1,10 +1,12 @@
 <template>
   <article class="cta">
     <header class="bg-gradient-to-r from-green-500 to-blue-500 h-12">
-      <div class="icon" />
+      <div class="icon w-16 h-16 absolute bottom-0 bg-gradient-to-r from-green-500 to-green-300 rounded-full flex items-center justify-center">
+        <slot name="icon" />
+      </div>
     </header>
     <main>
-      <slot></slot>
+      <slot />
     </main>
   </article>
 </template>
@@ -25,7 +27,6 @@ export default {};
     }
 
     .icon {
-      @apply w-16 h-16 absolute bottom-0 bg-gradient-to-r from-green-500 to-green-300 rounded-full;
       transform: translateY(50%);
       left: 1.5rem;
     }

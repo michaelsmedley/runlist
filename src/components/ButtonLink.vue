@@ -54,7 +54,7 @@ export default {
 
 <style lang="scss" scoped>
 .link--btn {
-  @apply rounded-full font-bold tracking-widest py-1 px-5 relative inline-block z-10 overflow-hidden;
+  @apply rounded-full font-bold tracking-widest py-1 px-5 relative inline-block z-10 overflow-hidden text-white-500 no-underline;
   font-size: 1rem;
 
   &:before {

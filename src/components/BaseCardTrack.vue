@@ -1,11 +1,11 @@
 <template>
   <button
-    class="c-card--track p-2 mb-4 items-center"
+    class="c-card flex p-5 mb-4 items-center row w-full gap-5 bg-white-500"
     :class="{ 'c-card--track--mini': mini, 'c-card--track--no-hover': noHover }"
     @click="handleClick(track)"
   >
     <div
-      class="c-card--track__img hidden md-block"
+      class="c-card--track__img hidden md:block"
       :class="{ 'md-1': mini, 'md-2': !mini }"
     >
       <picture>
@@ -13,32 +13,28 @@
           :srcset="track.album.images[1].url"
           media="(min-width: 768px)"
           :alt="`Image cover for ${track.name} by ${track.artists[0].name}`"
-          width="300"
-          height="300"
           loading="lazy"
         />
         <img
           :src="track.album.images[2].url"
           :alt="`Image cover for ${track.name} by ${track.artists[0].name}`"
           loading="lazy"
-          width="64"
-          height="64"
+          width="200"
+          height="200"
         />
       </picture>
     </div>
     <div
-      class="c-card--track__info"
-      :class="{ 'sm-7': !hidePreview, 'sm-12 md-7': hidePreview }"
+      class="c-card--track__info text-left"
+      :class="{ 'w-7/12': !hidePreview, 'w-full md:w-7/12': hidePreview }"
     >
-      <p class="my-1">
-        <strong>{{ track.artists[0].name }} - {{ track.name }}</strong>
-      </p>
+      <h3>{{ track.artists[0].name }} - {{ track.name }}</h3>
       <p>{{ track.album.name }}</p>
     </div>
     <div
       class="c-card--track__preview text-right"
       v-if="!hidePreview"
-      :class="{ 'sm-4': mini, 'sm-3': !mini }"
+      :class="{ 'w-1/3': mini, 'w-1/4': !mini }"
     >
       <base-link :href="track.preview_url" pill primary target="_blank"
         >Preview</base-link
@@ -85,5 +81,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.c-card {
+  @apply relative;
 
+  &:after {
+    @apply absolute block bg-gradient-to-r from-green-500 to-blue-500 mx-auto;
+    content: '';
+    height: 1px;
+    width: calc(100% - theme('padding.5') * 2);
+    z-index: -1;
+    bottom: -1px;
+  }
+}
 </style>
