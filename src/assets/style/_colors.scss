@@ -1,0 +1,26 @@
+.bg-primary {
+  background-color: $color--primary;
+}
+
+.bg-primary__tint {
+  background-color: lighten($color--primary, 20%);
+}
+
+.bg-primary__gradient {
+  background: linear-gradient(
+    to bottom right,
+    $color--primary 0%,
+    lighten($color--primary, 10%) 30%,
+    lighten($color--primary, 10%) 75%,
+    darken($color--primary, 10%) 100%,
+  );
+  color: $color--secondary;
+}
+
+.bg-secondary {
+  background-color: $color--secondary;
+}
+
+.text-secondary {
+    color: $color--secondary;
+}

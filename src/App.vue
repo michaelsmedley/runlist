@@ -10,13 +10,13 @@
 <script>
 import { reactive } from "vue";
 
-import SiteHeader from "@/components/TheSiteHeader";
 import SiteFooter from "@/components/TheSiteFooter";
+import SiteHeader from "@/components/TheSiteHeader.vue";
 
 export default {
   components: {
-    SiteHeader,
     SiteFooter,
+    SiteHeader
   },
   provide: reactive({
     state: {

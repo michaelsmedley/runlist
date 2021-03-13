@@ -1,6 +1,6 @@
 <template>
-  <div class="c-card--user flex justify-between items-center gap-2">
-    <span class="c-card--user__img rounded-full w-10 h-10 overflow-hidden inline-block ">
+  <div class="c-card--user">
+    <span class="c-card--user__img">
       <slot name="img" />
     </span>
     <span class="c-card--user__name">
@@ -14,5 +14,31 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
+.c-card {
+  &--user {
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-bottom: 0;
 
+    * {
+      margin-bottom: 0;
+    }
+
+    &__img {
+      border-radius: 100%;
+      display: inline-block;
+      height: 50px;
+      overflow: hidden;
+      width: 50px;
+
+      ::v-deep img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
 </style>

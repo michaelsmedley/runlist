@@ -22,17 +22,19 @@ export default {
 
 <style lang="scss" scoped>
 .c-intro-block {
-  @apply bg-gradient-to-r from-green-500 to-green-300 text-white-500 mb-4;
+  background: $color--primary;
+  color: $color--secondary;
+  padding: 5vmax 0;
+}
+</style>
 
-  &.is-large {
-    @apply py-16;
-  }
-
+<style lang="scss">
+.c-intro-block {
   &.overlap {
-    @apply -mb-8;
-
-    @screen md {
-      // @apply -mb-3;
+    margin-bottom: 0;
+    + * {
+      position: relative;
+      transform: translateY(-50%);
     }
   }
 }
