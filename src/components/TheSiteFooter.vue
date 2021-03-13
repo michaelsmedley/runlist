@@ -2,8 +2,14 @@
   <footer>
     <div class="container">
       <p>
-        Built by <a href="https://twitter.com/smdly">@smdly</a>. View on
-        <a href="#">Github</a>
+        Built by <a href="https://twitter.com/smdly" target="_blank">@smdly</a>.
+        View on
+        <a
+          href="https://github.com/michaelsmedley/runlist/"
+          rel="noopener nofollow"
+          target="_blank"
+          >Github</a
+        >
       </p>
     </div>
   </footer>
