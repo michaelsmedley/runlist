@@ -1,0 +1,28 @@
+.c-modal form {
+  background: rgba(
+    red($color--primary),
+    green($color--primary),
+    blue($color--primary),
+    0.75
+  );
+  display: flex;
+  left: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+
+  fieldset {
+    background: white;
+    border-radius: 8px;
+    border: 0;
+    margin-bottom: 0;
+    max-width: 50rem;
+    padding: 2rem;
+    width: 90vw;
+    height: 90vh;
+    max-height: 40.625rem;
+  }
+}
