@@ -1,36 +1,68 @@
 <template>
   <div class="home">
-    <h1>Search for a track to begin</h1>
-    <p v-if="state.authToken">Connected with token {{ state.authToken }}</p>
-    <p v-if="state.userToken">User authorised with {{ state.userToken }}</p>
-    <p v-if="state.user.id">Hello {{ state.user.id }}</p>
+    <intro-block is-large overlap>
+      <div class="container">
+        <div class="text-center">
+          <h2>Generate a playlist for your next 💪💪</h2>
+        </div>
+      </div>
+    </intro-block>
 
-    <track-finder @selected="handleGetBpm" />
-
-    <div v-if="state.selectedTrack && state.tempo">
-      <p>
-        <strong>{{ state.selectedTrack.name }}</strong> has a tempo of
-        <strong>{{ state.tempo }}</strong>
-      </p>
+    <div class="container">
+      <track-finder @selected="handleGetBpm" />
     </div>
-    <div v-if="state.recommendations.length > 0">
-      <h3>Here are some recommendations</h3>
-      <ul class="inline-list">
-        <li
-          v-for="recommendation in state.recommendations"
-          :key="recommendation.id"
-        >
-          {{ recommendation.artists[0].name }} - {{ recommendation.name }}
-        </li>
-      </ul>
-      <button @click="handleGeneratePlaylist" type="button">
-        Save to playlist?
-      </button>
+
+    <suggestions-list
+      v-if="state.suggestions.length > 0"
+      @selected="handleGetBpm"
+    />
+
+    <div class="container" v-else-if="isEmptyState">
+      <p>
+        Runlist will generate a Spotify playlist for you based on the BPM of
+        your favourite running track, so that you can make sure your pace never
+        drops.
+      </p>
+      <p>Filter tracks by artists or genre to get your perfect mix</p>
+    </div>
+
+    <div v-if="state.selectedTrack && state.tempo" class="container">
+      <div class="sm-12 text-center">
+        <p>
+          <strong>{{ state.selectedTrack.name }}</strong> has a tempo of
+          <strong>{{ state.tempo }}</strong>
+        </p>
+
+        <p>Here's your suggested playlist</p>
+      </div>
+      <div v-if="state.recommendations.length > 0" class="sm-12">
+        <inline-list is-column>
+          <li
+            v-for="recommendation in state.recommendations"
+            :key="recommendation.id"
+          >
+            <track-card :track="recommendation" as-row no-hover />
+          </li>
+        </inline-list>
+        <p class="text-center">
+          <button
+            @click="handleGeneratePlaylist"
+            type="button"
+            class="as-link"
+            v-if="state.user.id"
+          >
+            Save to playlist?
+          </button>
+          <base-link :href="state.loginLink" pill secondary v-else
+            >Login to Spotify to save your playlist</base-link
+          >
+        </p>
+      </div>
     </div>
   </div>
   <teleport to="#modal">
-    <div v-if="modalOpen">
-      <form method="post" @submit.prevent="saveToPlaylist">
+    <form method="post" @submit.prevent="saveToPlaylist" v-if="modalOpen">
+      <fieldset>
         <p>
           <label for="name"
             >Playlist name<br />
@@ -46,9 +78,22 @@
             ></textarea
           ></label>
         </p>
-        <button type="submit">Save</button>
-      </form>
-    </div>
+        <p class="text-center">
+          <button type="submit" class="pill primary">Save</button>&nbsp;
+          <button type="button" class="pill primary" @click="modalOpen = false">
+            Close
+          </button>
+        </p>
+
+        <p v-if="saved">
+          <span v-if="saved === true"
+            >The playlist has been saved!
+            <base-link href="/">Click here to start again</base-link></span
+          >
+          <span v-else>The playlist has not been saved!</span>
+        </p>
+      </fieldset>
+    </form>
   </teleport>
 </template>
 
@@ -56,13 +101,23 @@
 import AuthModel from "@/api/AuthModel";
 import SongsModel from "@/api/SongsModel";
 
+import BaseLink from "@/components/BaseLink";
+import InlineList from "@/components/BaseListInline";
+import IntroBlock from "@/components/BaseIntroBlock";
 import TrackFinder from "@/components/TheTrackFinder";
+import SuggestionsList from "@/components/TheSuggestionsList";
+import TrackCard from "@/components/BaseCardTrack";
 
 export default {
   name: "Home",
 
   components: {
+    BaseLink,
+    InlineList,
+    IntroBlock,
+    TrackCard,
     TrackFinder,
+    SuggestionsList,
   },
 
   inject: ["state"],
@@ -71,6 +126,7 @@ export default {
     return {
       modalOpen: false,
       status: null,
+      saved: null,
     };
   },
 
@@ -78,12 +134,18 @@ export default {
     track() {
       return this.state.track;
     },
+    isEmptyState() {
+      return (
+        this.state.suggestions.length == 0 &&
+        Object.keys(this.state.selectedTrack).length == 0
+      );
+    },
   },
 
   methods: {
     handleGeneratePlaylist() {
       if (!this.state.userToken) {
-        window.location.href = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Frunlist.michael-smedley.co.uk&scope=user-read-private%2cplaylist-modify-public`;
+        window.location.href = this.state.loginLink;
         //Put state in localStorage so that when we come back it is available
         localStorage.setItem("runlist_state", JSON.stringify(this.state));
         return;
@@ -128,10 +190,10 @@ export default {
           this.state.userToken
         )
           .then(() => {
-            this.status = "Playlist saved!!";
+            this.saved = true;
           })
-          .catch((err) => {
-            this.status = err;
+          .catch(() => {
+            this.saved = false;
           });
       });
     },
@@ -162,87 +224,6 @@ export default {
       }
     }
   },
-
-  // setup(context) {
-  //   let status;
-
-  //   // get details of the track we've selected
-  //   const handleGetBpm = (track) => {
-  //     state.selectedTrack = track;
-  //     state.suggestions = [];
-  //     SongsModel.getTrackInfo(track.id, state.authToken).then((resp) => {
-  //       state.tempo = resp;
-
-  //       // get recomendations
-  //       SongsModel.getRecommendations(resp, track.id, state.authToken).then(
-  //         (resp) => {
-  //           state.recommendations = resp;
-  //         }
-  //       );
-  //     });
-  //   };
-
-  //   // If the user is not logged in, get user to authorize, else show modal to add playlist info
-  //   const addPlaylistInfo = () => {
-  //     if (!state.userToken) {
-  //       window.location.href = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_ID}&response_type=token&redirect_uri=http:%2F%2Frunlist.michael-smedley.co.uk&scope=user-read-private%2cplaylist-modify-public`;
-  //       return;
-  //     }
-
-  //     modalOpen.value = true;
-  //   };
-
-  //   // map all the track uris and save to playlist
-  //   const saveToPlaylist = () => {
-  //     const ids = state.recommendations.map((track) => track.uri);
-  //     state.uris = ids;
-
-  //     // get details about the user, create playlist, add songs
-  //     AuthModel.getCurrentUser(state.userToken).then((resp) => {
-  //       const userId = resp.id;
-
-  //       //create a playlist
-  //       //TODO: Should be a playlist model
-  //       SongsModel.createPlaylist(
-  //         userId,
-  //         state.playlistInfo,
-  //         state.userToken
-  //       ).then((resp) => {
-  //         // then add songs to it
-  //         SongsModel.addSongsToPlaylist(
-  //           resp.id,
-  //           userId,
-  //           state.uris,
-  //           state.userToken
-  //         )
-  //           .then(() => {
-  //             this.status = "Playlist saved!!";
-  //           })
-  //           .catch((err) => {
-  //             this.status = err;
-  //           });
-  //       });
-  //     });
-  //   };
-
-  //   // when someone types in the search box, run debounce function
-  //   watch(
-  //     () => state.track,
-  //     (track) => {
-  //       debounceListener(track);
-  //     }
-  //   );
-
-  //   return {
-  //     state,
-  //     debounceListener,
-  //     handleGetBpm,
-  //     saveToPlaylist,
-  //     status,
-  //     modalOpen,
-  //     addPlaylistInfo,
-  //   };
-  // },
 };
 </script>
 
