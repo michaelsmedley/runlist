@@ -1,6 +1,6 @@
 <template>
   <figure class="c-avatar">
-    <img :src="src" :title="title" />
+    <img :src="src" :title="title" :alt="title" />
   </figure>
 </template>
 
