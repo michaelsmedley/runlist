@@ -1,4 +1,4 @@
 [[headers]]
     for = "/*"
     [headers.values]
-        Content-Security-Policy = "default-src 'self'; img-src 'self' scdn.co; connect-src 'self' accounts.spotify.com api.spotify.com;"
+        Content-Security-Policy = "default-src 'self'; img-src 'self' i.scdn.co; connect-src 'self' accounts.spotify.com api.spotify.com;"
